@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <style>
+            body {
+                background-image: linear-gradient(120deg, #e2c35d, #d88771);
+                color: white;
+                font-family: 'Poppins', sans-serif;
+                min-height: 100vh;
+            }
+
+        </style>
+        <title>Welcome in ToDo</title>
+    </head>
+
+    <body>
+        {% for message in messages %}
+
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>Message: </strong> {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        {% endfor %}
+        <div class="container">
+            <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"
+                class="my-5">Attaching you with your Targets</h1>
+        </div>
+        <div class="container">
+            <h1 style="font-size: 100px; font-weight: 800; text-align: center;">Welcome in ToDo</h1>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+            crossorigin="anonymous"></script>
+        <div class="container my-5" style="text-align: center;">
+
+            <p>
+                <a class="btn btn-dark btn-lg mx-3 btn-outline-info" data-bs-toggle="collapse"
+                    href="#multiCollapseExample1" role="button" aria-expanded="false"
+                    aria-controls="multiCollapseExample1">Login</a>
+                <button class="btn btn-dark btn-lg mx-3 btn-outline-info" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#multiCollapseExample2" aria-expanded="false"
+                    aria-controls="multiCollapseExample2">SignUp</button>
+
+            </p>
+            <div class="row">
+                <!-- Login Form -->
+                <div class="col">
+                    <div class="collapse multi-collapse" id="multiCollapseExample1">
+                        <div class="card card-body">
+                            <form action="http://127.0.0.1:8000/todo/login/" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3" style="color: black;">
+                                    <p>User Name: <input type="text" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" name="loginname" required></p>
+                                </div>
+                                <div class="mb-3" style="color: black">
+                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                        name="loginpass" required>
+                                </div>
+                                <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <div class="g-recaptcha" data-sitekey="6LeNWXsaAAAAADwJLr8M5dPSOBPhNKY1bV-MKbwq "></div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signup Form -->
+                <div class="col">
+                    <div class="collapse multi-collapse" id="multiCollapseExample2">
+                        <div class="card card-body">
+                            <form method="POST" action="http://127.0.0.1:8000/todo/signup/">
+                                {% csrf_token %}
+                                <div class="mb-3" style="color: black;">
+                                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" name="signupemail" required>
+
+                                </div>
+                                <div class="mb-3" style="color: black;">
+                                    <label for="exampleInputPassword1" class="form-label">Full Name</label>
+                                    <input type="text" name="signupfullname" class="form-control"
+                                        id="exampleInputPassword1" required>
+                                </div>
+                                <div class="mb-3" style="color: black;">
+                                    <label for="exampleInputPassword1" class="form-label">User Name</label>
+                                    <input type="text" name="signupusername" class="form-control"
+                                        id="exampleInputPassword1" required>
+                                </div>
+                                <div class="mb-3" style="color: black;">
+                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                        name="signuppass" required>
+                                </div>
+                                <div class="mb-3" style="color: black;">
+                                    <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                        name="signupconfirmpass" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

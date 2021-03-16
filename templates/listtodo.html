@@ -1,0 +1,148 @@
+<!-- 6LeNWXsaAAAAADwJLr8M5dPSOBPhNKY1bV-MKbwq  Sitekey -->
+<!-- 6LeNWXsaAAAAAJuaa2dNGGN6bkID2oYJB5buKBXq  SecretKey -->
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+        <title>Welcome to the list</title>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            body {
+                background-image: linear-gradient(120deg, #e2c35d, #d88771);
+                color: white;
+                font-family: 'Poppins', sans-serif;
+                min-height: 100vh;
+            }
+
+            .h1text {
+                text-align: center;
+                font-weight: 900;
+                font-size: 200px;
+            }
+
+            .taskedit {
+                border: 2px solid black;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>Message: </strong> {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% if user.is_authenticated  %}
+        <div class="container h1text my-5">
+            <h1 style="font-size: 50px; font-weight: 900;
+                text-shadow: 2px 2px #ff0000;
+              ">{{user.first_name}}'s Todo List</h1>
+
+        </div>
+
+        <div class="container" style="text-align:center;">
+            <a href="http://127.0.0.1:8000/todo/logout/" class="btn btn-primary">Logout</a>
+        </div>
+
+
+
+
+        <!-- Optional JavaScript; choose one of the two! -->
+        <div class="container   my-3">
+            <form method="POST" action="http://127.0.0.1:8000/todo/addtolist/">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-10 ">
+                        <input type="text" class="form-control taskedit" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" name="task" placeholder="Enter your Task Here" required>
+                        <input type="hidden" value="{{user.username}}" name="who">
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="submit" class="btn btn-primary">Add to List</button>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </div>
+
+        </div>
+        </div>
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+            crossorigin="anonymous"></script>
+
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+    -->
+        {% else %}
+        <div class="container h1text my-5">
+            <h1 style="font-size: 30px; font-weight: 900;
+                text-shadow: 2px 2px #ff0000;
+              ">Please Login to view and add tasks to the List </h1>
+        </div>
+        <div class="container" style="text-align: center;">
+            <a class="btn btn-primary" href="http://127.0.0.1:8000/">Login Now</a>
+        </div>
+
+        {% endif %}
+
+        <div class="container " style="color: black;">
+            <ul class="list-group">
+
+                <!-- Showing the Tasks -->
+                {% for task in tasks %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <!-- If task is done then show the deleted text -->
+                        {% if task.status == "Done" %}
+                        <div class="col-md-8" style="text-decoration-line: line-through;">{{task.data}}</div>
+                        {% else %}
+                        <!-- Else show the normal Task -->
+                        <div class="col-md-8">{{task.data}}</div>
+                        {% endif %}
+                        
+                        <div class="col-md-2">
+                            <!-- Task is done then  show deleted and completed buttons -->
+                            {% if task.status != "Done" %}
+                            <form action="http://127.0.0.1:8000/todo/update/" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="done" value="{{task.sno}}">
+                                <button type="submit" class="btn badge bg-success"><i class="fa fa-check"></i></button>
+                            </form>
+                            {% else %}
+                            <span class="btn badge bg-success">Completed</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-2">
+                            <!-- Task is not done then  show different completed buttons -->
+                            <form action="http://127.0.0.1:8000/todo/delete/" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete" value="{{task.sno}}" name="delete">
+                                <button type="submit" class="btn badge bg-danger"><i class="fa fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </body>
+
+</html>
